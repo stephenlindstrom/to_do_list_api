@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom' 
 
 const Login = (props) => {
   const [email, setEmail] = useState('')
@@ -66,6 +66,7 @@ const Login = (props) => {
       <br />
       <div className={'inputContainer'}>
         <input
+          type='password'
           value={password}
           placeholder="Enter your password here"
           onChange={(ev) => setPassword(ev.target.value)}
