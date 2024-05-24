@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom' 
+import Cookies from 'js-cookie';
 
 const Login = (props) => {
   const [email, setEmail] = useState('')
@@ -13,20 +14,6 @@ const Login = (props) => {
     logIn();
   }
 
-  const checkAccountExists = (callback) => {
-    fetch('http://localhost:3000/check-account', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({email})
-    })
-    .then(r => r.json())
-    .then(r => {
-        callback(r?.userExists)
-    })
-  }
-
   const logIn = () => {
     fetch('http://localhost:8000/api/token/', {
         method: 'POST',
@@ -38,10 +25,11 @@ const Login = (props) => {
     .then(r => r.json())
     .then(r => {
         if (r.access) {
-            localStorage.setItem('user', JSON.stringify({email, token: r.token}))
+            const token = r.access;
+            Cookies.set('token', token, {expires: 7});
             props.setLoggedIn(true)
             props.setEmail(email)
-            navigate('/')
+            navigate('/list')
         } else {
             window.alert('Wrong email or password')
         }
