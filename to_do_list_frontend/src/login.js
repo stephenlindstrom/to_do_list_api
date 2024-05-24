@@ -15,21 +15,16 @@ const Login = (props) => {
   }
 
   const logIn = () => {
-    fetch('http://localhost:8000/api/token/', {
+    fetch('http://localhost:8000/login/', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({"username": email, "password": password})
+        body: {'username': email, 'password': password}
     })
-    .then(r => r.json())
     .then(r => {
-        if (r.access) {
-            const token = r.access;
-            Cookies.set('token', token, {expires: 7});
+        if (r) {
+            console.log(r)
             props.setLoggedIn(true)
             props.setEmail(email)
-            navigate('/list')
+            navigate('/')
         } else {
             window.alert('Wrong email or password')
         }
